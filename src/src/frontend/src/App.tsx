@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -30,6 +30,7 @@ export default function App() {
   
   const [copiedUPI, setCopiedUPI] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const customAmountRef = useRef<HTMLInputElement>(null);
 
   const totalAmount = stats ? Number(stats.totalAmount) : 0;
   const mealsSponsored = stats ? Number(stats.mealsSponsored) : 0;
@@ -57,7 +58,7 @@ export default function App() {
 
   const handleCopyUPI = async () => {
     try {
-      await navigator.clipboard.writeText("8617335449@pytes");
+      await navigator.clipboard.writeText("skimraj984-1@oksbi");
       setCopiedUPI(true);
       toast.success("UPI ID copied to clipboard");
       setTimeout(() => setCopiedUPI(false), 2000);
@@ -78,6 +79,20 @@ export default function App() {
         toast.error("Failed to record donation. Please try again.");
       },
     });
+  };
+
+  const payCustomAmount = () => {
+    const input = customAmountRef.current;
+    if (!input) return;
+    
+    const amount = parseFloat(input.value);
+    
+    if (amount && amount > 0) {
+      const upiLink = `upi://pay?pa=skimraj984-1@oksbi&pn=Ramadan%20Iftar%20Fund&am=${amount}&cu=INR`;
+      window.location.href = upiLink;
+    } else {
+      toast.error("Please enter a valid amount.");
+    }
   };
 
   return (
@@ -275,33 +290,78 @@ export default function App() {
 
       {/* Donation Section */}
       <section id="donation-section" className="py-20 px-4 sm:px-6 lg:px-8 bg-secondary/30">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
-              Make Your Contribution
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Choose your preferred payment method below
-            </p>
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
+            Support Iftar with Your Contribution
+          </h2>
+          
+          <p className="text-lg text-muted-foreground mb-12">
+            Select an amount or enter your own.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
+            <a 
+              href="upi://pay?pa=skimraj984-1@oksbi&pn=Ramadan%20Iftar%20Fund&am=50&cu=INR"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-4 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg no-underline"
+            >
+              ₹50
+            </a>
+
+            <a 
+              href="upi://pay?pa=skimraj984-1@oksbi&pn=Ramadan%20Iftar%20Fund&am=100&cu=INR"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-4 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg no-underline"
+            >
+              ₹100
+            </a>
+
+            <a 
+              href="upi://pay?pa=skimraj984-1@oksbi&pn=Ramadan%20Iftar%20Fund&am=250&cu=INR"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-4 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg no-underline"
+            >
+              ₹250
+            </a>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Custom Amount Section */}
+          <div className="mb-12 max-w-md mx-auto">
+            <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-center">
+              <input
+                ref={customAmountRef}
+                type="number"
+                placeholder="Enter custom amount"
+                className="flex-1 px-4 py-3 rounded-lg border-2 border-primary/30 bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                min="1"
+                step="1"
+              />
+              <Button
+                onClick={payCustomAmount}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-3 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300"
+              >
+                Donate
+              </Button>
+            </div>
+          </div>
+
+          <Separator className="my-8 max-w-2xl mx-auto" />
+
+          {/* Alternative Payment Methods */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mt-12">
             {/* UPI QR Code */}
             <Card className="shadow-soft hover:shadow-xl transition-all duration-300">
               <CardHeader className="text-center">
-                <QrCode className="h-10 w-10 text-primary mx-auto mb-3" />
-                <CardTitle>Scan QR Code</CardTitle>
+                <QrCode className="h-8 w-8 text-primary mx-auto mb-2" />
+                <CardTitle className="text-lg">Scan QR Code</CardTitle>
                 <CardDescription>Pay via any UPI app</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col items-center">
-                <div className="bg-white p-4 rounded-xl shadow-inner mb-4">
+                <div className="bg-white p-3 rounded-xl shadow-inner mb-3">
                   <img 
                     src="/assets/uploads/WhatsApp-Image-2026-02-24-at-02.11.31-1.jpeg" 
                     alt="UPI QR Code" 
-                    className="w-48 h-48 object-contain"
+                    className="w-40 h-40 object-contain"
                   />
                 </div>
-                <p className="text-sm text-muted-foreground text-center">
+                <p className="text-xs text-muted-foreground text-center">
                   Scan with Google Pay, PhonePe, Paytm, or any UPI app
                 </p>
               </CardContent>
@@ -310,14 +370,14 @@ export default function App() {
             {/* UPI ID */}
             <Card className="shadow-soft hover:shadow-xl transition-all duration-300">
               <CardHeader className="text-center">
-                <CreditCard className="h-10 w-10 text-primary mx-auto mb-3" />
-                <CardTitle>UPI ID</CardTitle>
+                <CreditCard className="h-8 w-8 text-primary mx-auto mb-2" />
+                <CardTitle className="text-lg">UPI ID</CardTitle>
                 <CardDescription>Copy and paste in your UPI app</CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-col items-center space-y-4">
-                <div className="bg-muted/50 px-6 py-4 rounded-lg w-full text-center border-2 border-dashed border-border">
-                  <p className="text-xl font-mono font-semibold text-foreground mb-1">
-                    8617335449@pytes
+              <CardContent className="flex flex-col items-center space-y-3">
+                <div className="bg-muted/50 px-4 py-3 rounded-lg w-full text-center border-2 border-dashed border-border">
+                  <p className="text-lg font-mono font-semibold text-foreground mb-1">
+                    skimraj984-1@oksbi
                   </p>
                   <p className="text-xs text-muted-foreground">UPI ID</p>
                 </div>
@@ -326,6 +386,7 @@ export default function App() {
                   onClick={handleCopyUPI}
                   variant="outline"
                   className="w-full"
+                  size="sm"
                 >
                   {copiedUPI ? (
                     <>
@@ -339,78 +400,6 @@ export default function App() {
                     </>
                   )}
                 </Button>
-
-                <Separator />
-
-                <div className="w-full space-y-2">
-                  <p className="text-sm font-medium text-center mb-3">After payment, record your donation:</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button 
-                      onClick={() => handleManualDonationRecord(50)}
-                      disabled={isRecordingDonation}
-                      variant="secondary"
-                      size="sm"
-                      className="text-xs"
-                    >
-                      {isRecordingDonation ? <Loader2 className="h-3 w-3 animate-spin" /> : "₹50"}
-                    </Button>
-                    <Button 
-                      onClick={() => handleManualDonationRecord(100)}
-                      disabled={isRecordingDonation}
-                      variant="secondary"
-                      size="sm"
-                      className="text-xs"
-                    >
-                      {isRecordingDonation ? <Loader2 className="h-3 w-3 animate-spin" /> : "₹100"}
-                    </Button>
-                    <Button 
-                      onClick={() => handleManualDonationRecord(500)}
-                      disabled={isRecordingDonation}
-                      variant="secondary"
-                      size="sm"
-                      className="text-xs"
-                    >
-                      {isRecordingDonation ? <Loader2 className="h-3 w-3 animate-spin" /> : "₹500"}
-                    </Button>
-                    <Button 
-                      onClick={() => handleManualDonationRecord(1000)}
-                      disabled={isRecordingDonation}
-                      variant="secondary"
-                      size="sm"
-                      className="text-xs"
-                    >
-                      {isRecordingDonation ? <Loader2 className="h-3 w-3 animate-spin" /> : "₹1000"}
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Razorpay */}
-            <Card className="shadow-soft hover:shadow-xl transition-all duration-300">
-              <CardHeader className="text-center">
-                <CreditCard className="h-10 w-10 text-primary mx-auto mb-3" />
-                <CardTitle>Card Payment</CardTitle>
-                <CardDescription>Credit or Debit Card</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center space-y-4">
-                <div className="w-full h-32 bg-muted/30 rounded-lg border-2 border-dashed border-border flex items-center justify-center">
-                  <p className="text-sm text-muted-foreground text-center px-4">
-                    Razorpay integration<br />coming soon
-                  </p>
-                </div>
-                
-                <Button 
-                  variant="default"
-                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
-                  disabled
-                >
-                  Pay with Card
-                </Button>
-
-                <p className="text-xs text-muted-foreground text-center">
-                  Secure payment powered by Razorpay
-                </p>
               </CardContent>
             </Card>
           </div>

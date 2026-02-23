@@ -8,50 +8,50 @@
   :root {
     --radius: 0.75rem;
     
-    /* Soft Islamic green & cream palette */
-    --background: 0.97 0.01 85;  /* Warm cream/ivory */
-    --foreground: 0.25 0.02 140;  /* Deep teal-black */
-    --card: 0.99 0.005 85;  /* Lighter cream for cards */
-    --card-foreground: 0.25 0.02 140;
-    --popover: 0.99 0.005 85;
-    --popover-foreground: 0.25 0.02 140;
+    /* Deep black with emerald green theme */
+    --background: 0.12 0.01 0;  /* Deep black #121212 */
+    --foreground: 0.95 0.01 0;  /* White/light gray for contrast */
+    --card: 0.18 0.02 165;  /* Slightly lighter dark with green tint */
+    --card-foreground: 0.95 0.01 0;
+    --popover: 0.18 0.02 165;
+    --popover-foreground: 0.95 0.01 0;
     
-    /* Soft Islamic green primary */
-    --primary: 0.55 0.08 165;  /* Soft teal-green */
-    --primary-foreground: 0.99 0.005 85;
+    /* Emerald green primary */
+    --primary: 0.60 0.12 165;  /* Emerald green #00a86b */
+    --primary-foreground: 0.98 0.01 0;
     
-    /* Muted green secondary */
-    --secondary: 0.92 0.02 165;  /* Very light sage */
-    --secondary-foreground: 0.35 0.05 165;
+    /* Darker secondary */
+    --secondary: 0.22 0.03 165;  /* Dark green-tinted */
+    --secondary-foreground: 0.85 0.02 165;
     
-    --muted: 0.94 0.01 85;
-    --muted-foreground: 0.52 0.02 140;
+    --muted: 0.25 0.02 0;
+    --muted-foreground: 0.70 0.01 0;
     
     /* Gold accent */
-    --accent: 0.72 0.13 75;  /* Warm gold */
-    --accent-foreground: 0.25 0.02 75;
+    --accent: 0.75 0.15 75;  /* Bright gold */
+    --accent-foreground: 0.15 0.02 75;
     
     --destructive: 0.577 0.245 27.325;
-    --destructive-foreground: 0.985 0 0;
+    --destructive-foreground: 0.98 0.01 0;
     
-    --border: 0.88 0.015 85;
-    --input: 0.88 0.015 85;
-    --ring: 0.55 0.08 165;
+    --border: 0.28 0.03 165;
+    --input: 0.28 0.03 165;
+    --ring: 0.60 0.12 165;
     
-    --chart-1: 0.55 0.08 165;
-    --chart-2: 0.72 0.13 75;
-    --chart-3: 0.65 0.09 180;
-    --chart-4: 0.78 0.11 65;
-    --chart-5: 0.82 0.08 55;
+    --chart-1: 0.60 0.12 165;
+    --chart-2: 0.75 0.15 75;
+    --chart-3: 0.65 0.10 180;
+    --chart-4: 0.78 0.13 65;
+    --chart-5: 0.82 0.10 55;
     
-    --sidebar: 0.99 0.005 85;
-    --sidebar-foreground: 0.25 0.02 140;
-    --sidebar-primary: 0.55 0.08 165;
-    --sidebar-primary-foreground: 0.99 0.005 85;
-    --sidebar-accent: 0.92 0.02 165;
-    --sidebar-accent-foreground: 0.35 0.05 165;
-    --sidebar-border: 0.88 0.015 85;
-    --sidebar-ring: 0.55 0.08 165;
+    --sidebar: 0.18 0.02 165;
+    --sidebar-foreground: 0.95 0.01 0;
+    --sidebar-primary: 0.60 0.12 165;
+    --sidebar-primary-foreground: 0.98 0.01 0;
+    --sidebar-accent: 0.22 0.03 165;
+    --sidebar-accent-foreground: 0.85 0.02 165;
+    --sidebar-border: 0.28 0.03 165;
+    --sidebar-ring: 0.60 0.12 165;
   }
 
   .dark {
@@ -103,8 +103,27 @@
   }
   
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     font-family: 'Inter', system-ui, sans-serif;
+    
+    /* Deep black base */
+    background-color: #121212;
+    
+    /* Radial gradient overlay - emerald green to black */
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(0, 168, 107, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 0% 50%, rgba(0, 168, 107, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 100% 50%, rgba(0, 168, 107, 0.08) 0%, transparent 50%);
+    
+    /* Islamic geometric pattern overlay */
+    background-image: 
+      url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300a86b' fill-opacity='0.06'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+      radial-gradient(circle at 50% 0%, rgba(0, 168, 107, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 0% 50%, rgba(0, 168, 107, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 100% 50%, rgba(0, 168, 107, 0.08) 0%, transparent 50%);
+    
+    background-attachment: fixed;
+    min-height: 100vh;
   }
   
   h1, h2, h3, h4, h5, h6 {

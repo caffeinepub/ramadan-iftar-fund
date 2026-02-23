@@ -57,7 +57,7 @@ export default function App() {
 
   const handleCopyUPI = async () => {
     try {
-      await navigator.clipboard.writeText("ramadan@upi");
+      await navigator.clipboard.writeText("8617335449@pytes");
       setCopiedUPI(true);
       toast.success("UPI ID copied to clipboard");
       setTimeout(() => setCopiedUPI(false), 2000);
@@ -101,14 +101,14 @@ export default function App() {
           backgroundPosition: "center",
         }}
       >
-        {/* Overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/90 to-background/95" />
+        {/* Dark overlay for readability on black background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/85 to-black/90" />
         
-        {/* Animated geometric pattern overlay */}
+        {/* Animated geometric pattern overlay - reduced opacity */}
         <div 
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-[0.07]"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l10 10-10 10-10-10L30 0zm0 40l10 10-10 10-10-10 10-10zM0 30l10 10-10 10L0 40l10-10L0 20v10zm40 0l10 10-10 10-10-10 10-10zm10-10l10 10-10 10V30l10-10zM20 30l10-10 10 10-10 10-10-10z' fill='%234A9B7F' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l10 10-10 10-10-10L30 0zm0 40l10 10-10 10-10-10 10-10zM0 30l10 10-10 10L0 40l10-10L0 20v10zm40 0l10 10-10 10-10-10 10-10zm10-10l10 10-10 10V30l10-10zM20 30l10-10 10 10-10 10-10-10z' fill='%2300a86b' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`,
             animation: "shimmer 20s linear infinite",
           }}
         />
@@ -116,14 +116,14 @@ export default function App() {
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="animate-fade-in-up">
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
-              Feed 1 Person for{" "}
-              <span className="text-primary inline-block">₹50</span>
+              SVU Students Feeding{" "}
+              <span className="text-primary inline-block">1000 People</span>
               <br />
               This Ramadan
             </h1>
             
             <p className="text-xl sm:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto font-sans leading-relaxed">
-              Your small contribution can bring comfort to someone fasting.
+              An initiative by students of Swami Vivekananda University to serve Iftar meals to the needy.
             </p>
             
             <Button 
@@ -132,7 +132,7 @@ export default function App() {
               className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-6 rounded-full shadow-glow hover:shadow-xl transition-all duration-300 hover:scale-105"
             >
               <Heart className="mr-2 h-5 w-5" />
-              Donate Now
+              Support as an SVU Student
             </Button>
           </div>
 
@@ -172,6 +172,45 @@ export default function App() {
                   <AnimatedCounter value={percentageComplete} suffix="%" decimals={1} />
                 )}
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Campus Identity Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-secondary/20 to-background">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-block mb-6">
+            <div className="bg-primary/10 border-2 border-primary rounded-full px-6 py-2">
+              <p className="text-primary font-bold text-lg">🎓 Student-Led Initiative</p>
+            </div>
+          </div>
+          
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
+            SVU Unity in Action
+          </h2>
+          
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+            Together, we can show the power of SVU unity. This isn't just a fundraiser—it's our chance as students to make a real impact in our community during Ramadan.
+          </p>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="bg-card/50 backdrop-blur border border-border rounded-xl p-6 hover:border-primary transition-all">
+              <div className="text-4xl mb-3">💪</div>
+              <p className="font-semibold text-foreground mb-2">By Students</p>
+              <p className="text-sm text-muted-foreground">100% student-driven and organized</p>
+            </div>
+            
+            <div className="bg-card/50 backdrop-blur border border-border rounded-xl p-6 hover:border-primary transition-all">
+              <div className="text-4xl mb-3">🤝</div>
+              <p className="font-semibold text-foreground mb-2">For Community</p>
+              <p className="text-sm text-muted-foreground">Feeding families in need together</p>
+            </div>
+            
+            <div className="bg-card/50 backdrop-blur border border-border rounded-xl p-6 hover:border-primary transition-all">
+              <div className="text-4xl mb-3">🌟</div>
+              <p className="font-semibold text-foreground mb-2">SVU Pride</p>
+              <p className="text-sm text-muted-foreground">Representing our university values</p>
             </div>
           </div>
         </div>
@@ -301,7 +340,7 @@ export default function App() {
               <CardContent className="flex flex-col items-center space-y-4">
                 <div className="bg-muted/50 px-6 py-4 rounded-lg w-full text-center border-2 border-dashed border-border">
                   <p className="text-xl font-mono font-semibold text-foreground mb-1">
-                    ramadan@upi
+                    8617335449@pytes
                   </p>
                   <p className="text-xs text-muted-foreground">UPI ID</p>
                 </div>
@@ -413,7 +452,7 @@ export default function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          <div className="max-w-2xl mx-auto mb-12">
             {/* Expense Breakdown */}
             <Card className="shadow-soft">
               <CardHeader>
@@ -458,31 +497,6 @@ export default function App() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Daily Reports */}
-            <Card className="shadow-soft">
-              <CardHeader>
-                <CardTitle className="text-2xl">Daily Updates</CardTitle>
-                <CardDescription>Track meal distribution in real-time</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="bg-muted/30 rounded-xl p-6 text-center border-2 border-dashed border-border min-h-[280px] flex flex-col items-center justify-center">
-                    <Mail className="h-12 w-12 text-muted-foreground mb-4" />
-                    <p className="text-lg font-medium text-foreground mb-2">Coming Soon</p>
-                    <p className="text-sm text-muted-foreground max-w-xs">
-                      Daily meal distribution updates and reports will be posted here during Ramadan
-                    </p>
-                  </div>
-                  
-                  <div className="bg-accent/5 border border-accent/20 rounded-lg p-4">
-                    <p className="text-sm text-foreground text-center">
-                      📊 We will share daily photos, meal counts, and distribution locations
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Photo Gallery */}
@@ -496,10 +510,10 @@ export default function App() {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { src: "/assets/generated/meal-distribution-1.dim_800x600.jpg", alt: "Volunteers distributing meals" },
-                { src: "/assets/generated/meal-distribution-2.dim_800x600.jpg", alt: "Meal preparation" },
-                { src: "/assets/generated/meal-distribution-3.dim_800x600.jpg", alt: "Families breaking fast" },
-                { src: "/assets/generated/meal-distribution-4.dim_800x600.jpg", alt: "Charity event organization" },
+                { src: "/assets/uploads/WhatsApp-Image-2026-02-24-at-02.19.30-1.jpeg", alt: "Volunteers distributing meals" },
+                { src: "/assets/uploads/WhatsApp-Image-2026-02-24-at-02.19.29-2.jpeg", alt: "Meal preparation" },
+                { src: "/assets/uploads/WhatsApp-Image-2026-02-24-at-02.19.30-1--3.jpeg", alt: "Families breaking fast" },
+                { src: "/assets/uploads/WhatsApp-Image-2026-02-24-at-02.19.29-1--4.jpeg", alt: "Charity event organization" },
               ].map((image, idx) => (
                 <Card 
                   key={idx} 
@@ -529,15 +543,18 @@ export default function App() {
               <div className="space-y-3 text-sm text-muted-foreground">
                 <div className="flex items-start">
                   <Mail className="h-4 w-4 mr-2 mt-0.5 shrink-0" />
-                  <span>contact@ramadaniftar.org</span>
+                  <span>imrajsk514@gmail.com</span>
                 </div>
                 <div className="flex items-start">
                   <Phone className="h-4 w-4 mr-2 mt-0.5 shrink-0" />
-                  <span>+91 98765 43210</span>
+                  <div className="flex flex-col">
+                    <span>+91 90646 65672</span>
+                    <span className="mt-1">+91 93823 76193</span>
+                  </div>
                 </div>
                 <div className="flex items-start">
                   <MapPin className="h-4 w-4 mr-2 mt-0.5 shrink-0" />
-                  <span>Mumbai, Maharashtra, India</span>
+                  <span>Barrackpore, Swami Vivekananda University</span>
                 </div>
               </div>
             </div>
@@ -546,7 +563,7 @@ export default function App() {
             <div>
               <h4 className="text-lg font-semibold text-foreground mb-4">About This Campaign</h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                A community-driven initiative to provide nutritious iftar meals to those in need during the holy month of Ramadan. Every contribution makes a difference.
+                A student-led initiative at Swami Vivekananda University to feed 1000 people during Ramadan. Together, SVU students are making a real difference in our community. When we unite for a cause, we show what youth empowerment truly means.
               </p>
             </div>
 

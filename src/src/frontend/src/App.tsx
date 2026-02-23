@@ -114,16 +114,13 @@ export default function App() {
         />
         
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="animate-fade-in-up">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
-              SVU Students Feeding{" "}
-              <span className="text-primary inline-block">1000 People</span>
-              <br />
-              This Ramadan
+          <div className="animate-fade-in-spiritual">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-islamic-serif font-light text-primary mb-6 leading-tight tracking-wide">
+              Serving Iftar for the Pleasure of Allah.
             </h1>
             
-            <p className="text-xl sm:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto font-sans leading-relaxed">
-              An initiative by students of Swami Vivekananda University to serve Iftar meals to the needy.
+            <p className="text-xl sm:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto font-islamic-serif font-light leading-relaxed tracking-wide">
+              An initiative by SVU students this blessed Ramadan.
             </p>
             
             <Button 
@@ -426,7 +423,7 @@ export default function App() {
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url(/assets/generated/campus-hero.dim_1920x800.jpg)",
+            backgroundImage: "url(/assets/uploads/1676876330phpiNyAw9-1--1.jpeg)",
           }}
         />
         

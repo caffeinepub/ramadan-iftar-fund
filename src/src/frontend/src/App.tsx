@@ -193,26 +193,6 @@ export default function App() {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
             Together, we can show the power of SVU unity. This isn't just a fundraiser—it's our chance as students to make a real impact in our community during Ramadan.
           </p>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="bg-card/50 backdrop-blur border border-border rounded-xl p-6 hover:border-primary transition-all">
-              <div className="text-4xl mb-3">💪</div>
-              <p className="font-semibold text-foreground mb-2">By Students</p>
-              <p className="text-sm text-muted-foreground">100% student-driven and organized</p>
-            </div>
-            
-            <div className="bg-card/50 backdrop-blur border border-border rounded-xl p-6 hover:border-primary transition-all">
-              <div className="text-4xl mb-3">🤝</div>
-              <p className="font-semibold text-foreground mb-2">For Community</p>
-              <p className="text-sm text-muted-foreground">Feeding families in need together</p>
-            </div>
-            
-            <div className="bg-card/50 backdrop-blur border border-border rounded-xl p-6 hover:border-primary transition-all">
-              <div className="text-4xl mb-3">🌟</div>
-              <p className="font-semibold text-foreground mb-2">SVU Pride</p>
-              <p className="text-sm text-muted-foreground">Representing our university values</p>
-            </div>
-          </div>
         </div>
       </section>
 

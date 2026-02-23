@@ -280,7 +280,7 @@ export default function App() {
               <CardContent className="flex flex-col items-center">
                 <div className="bg-white p-4 rounded-xl shadow-inner mb-4">
                   <img 
-                    src="/assets/uploads/WhatsApp-Image-2026-02-24-at-02.05.57-1.jpeg" 
+                    src="/assets/uploads/WhatsApp-Image-2026-02-24-at-02.11.31-1.jpeg" 
                     alt="UPI QR Code" 
                     className="w-48 h-48 object-contain"
                   />

@@ -420,65 +420,40 @@ export default function App() {
         </div>
       </section>
 
+      {/* Our Campus, Our Initiative Section */}
+      <section className="relative w-full min-h-[500px] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: "url(/assets/generated/campus-hero.dim_1920x800.jpg)",
+          }}
+        />
+        
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-black/60" />
+        
+        {/* Content */}
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-24">
+          <div className="space-y-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+              An Initiative by SVU Students
+            </h2>
+            
+            <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+              Together, we are serving Iftar meals to those in need.
+            </p>
+            
+            <p className="text-sm text-white/70 mt-4">
+              Swami Vivekananda University, West Bengal
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Transparency Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
-              Transparency & Accountability
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              See exactly how your donations are being used
-            </p>
-          </div>
-
-          <div className="max-w-2xl mx-auto mb-12">
-            {/* Expense Breakdown */}
-            <Card className="shadow-soft">
-              <CardHeader>
-                <CardTitle className="text-2xl">Expense Breakdown</CardTitle>
-                <CardDescription>Where your donations go</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center p-4 bg-secondary/30 rounded-lg">
-                    <div>
-                      <p className="font-semibold text-foreground">Meals & Food</p>
-                      <p className="text-sm text-muted-foreground">Direct food cost per meal</p>
-                    </div>
-                    <p className="text-xl font-bold text-primary">₹40</p>
-                  </div>
-                  
-                  <div className="flex justify-between items-center p-4 bg-secondary/30 rounded-lg">
-                    <div>
-                      <p className="font-semibold text-foreground">Packaging & Logistics</p>
-                      <p className="text-sm text-muted-foreground">Containers, transport, distribution</p>
-                    </div>
-                    <p className="text-xl font-bold text-primary">₹8</p>
-                  </div>
-                  
-                  <div className="flex justify-between items-center p-4 bg-secondary/30 rounded-lg">
-                    <div>
-                      <p className="font-semibold text-foreground">Platform Fees</p>
-                      <p className="text-sm text-muted-foreground">Website hosting & maintenance</p>
-                    </div>
-                    <p className="text-xl font-bold text-primary">₹2</p>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="flex justify-between items-center p-4 bg-accent/10 rounded-lg border-2 border-accent">
-                    <div>
-                      <p className="font-bold text-foreground text-lg">Total per Meal</p>
-                      <p className="text-sm text-muted-foreground">100% goes to feeding people</p>
-                    </div>
-                    <p className="text-2xl font-bold text-accent">₹50</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
           {/* Photo Gallery */}
           <div>
             <h3 className="text-3xl font-bold text-foreground mb-6 text-center">

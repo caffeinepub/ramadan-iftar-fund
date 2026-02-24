@@ -58,7 +58,7 @@ export default function App() {
 
   const handleCopyUPI = async () => {
     try {
-      await navigator.clipboard.writeText("rohankhan3161@oksbi");
+      await navigator.clipboard.writeText("9382376193");
       setCopiedUPI(true);
       toast.success("UPI ID copied to clipboard");
       setTimeout(() => setCopiedUPI(false), 2000);
@@ -82,7 +82,7 @@ export default function App() {
   };
 
   const payUPI = (amount: number) => {
-    const upiLink = `upi://pay?pa=rohankhan3161@oksbi&pn=Ramadan%20Iftar%20Fund&am=${amount}&cu=INR`;
+    const upiLink = `upi://pay?pa=9382376193&pn=Ramadan%20Iftar%20Fund&am=${amount}&cu=INR`;
     window.location.href = upiLink;
   };
 
@@ -300,55 +300,25 @@ export default function App() {
           </h2>
           
           <p className="text-lg text-muted-foreground mb-12">
-            Select an amount or enter your own amount.
+            Enter any amount (₹1 minimum).
           </p>
-
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <button 
-              onClick={() => payUPI(50)}
-              className="bg-[#00a86b] hover:bg-[#00a86b]/90 text-white font-semibold px-8 py-4 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg border-none cursor-pointer"
-            >
-              ₹50
-            </button>
-
-            <button 
-              onClick={() => payUPI(100)}
-              className="bg-[#00a86b] hover:bg-[#00a86b]/90 text-white font-semibold px-8 py-4 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg border-none cursor-pointer"
-            >
-              ₹100
-            </button>
-
-            <button 
-              onClick={() => payUPI(250)}
-              className="bg-[#00a86b] hover:bg-[#00a86b]/90 text-white font-semibold px-8 py-4 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg border-none cursor-pointer"
-            >
-              ₹250
-            </button>
-
-            <button 
-              onClick={() => payUPI(500)}
-              className="bg-[#00a86b] hover:bg-[#00a86b]/90 text-white font-semibold px-8 py-4 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg border-none cursor-pointer"
-            >
-              ₹500
-            </button>
-          </div>
 
           {/* Custom Amount Section */}
           <div className="mb-12 max-w-md mx-auto">
-            <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-center">
+            <div className="flex flex-col gap-4 items-center justify-center">
               <input
                 ref={customAmountRef}
                 type="number"
-                placeholder="Enter amount (₹1 minimum)"
-                className="flex-1 px-4 py-3 rounded-lg border-2 border-primary/30 bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                placeholder="Enter amount"
+                className="w-full px-4 py-3 rounded-lg border-2 border-primary/30 bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-lg"
                 min="1"
                 step="1"
               />
               <Button
                 onClick={payCustom}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-3 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-10 py-6 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 text-lg w-full sm:w-auto"
               >
-                Donate
+                Pay Now
               </Button>
             </div>
           </div>
@@ -388,7 +358,7 @@ export default function App() {
               <CardContent className="flex flex-col items-center space-y-3">
                 <div className="bg-muted/50 px-4 py-3 rounded-lg w-full text-center border-2 border-dashed border-border">
                   <p className="text-lg font-mono font-semibold text-foreground mb-1">
-                    rohankhan3161@oksbi
+                    9382376193
                   </p>
                   <p className="text-xs text-muted-foreground">UPI ID</p>
                 </div>

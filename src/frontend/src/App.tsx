@@ -78,26 +78,17 @@ export default function App() {
     toast.success("QR Code downloaded successfully");
   };
 
-  const handleShareCampaign = async () => {
-    const shareData = {
-      title: 'Ramadan Iftar Fund',
-      text: 'Support Iftar for the needy this Ramadan.',
-      url: window.location.href
-    };
-
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-        toast.success("Campaign shared successfully");
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-        toast.success("Link copied. Share with others.");
-      }
-    } catch (err) {
-      // User cancelled or error occurred
-      if (err instanceof Error && err.name !== 'AbortError') {
-        toast.error("Failed to share campaign");
-      }
+  const handleShareCampaign = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: "Ramadan Iftar Fund",
+        text: "Support Iftar for the needy this Ramadan.",
+        url: window.location.href
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(window.location.href)
+        .then(() => alert("Link copied. Share with others."))
+        .catch(() => alert("Unable to copy link."));
     }
   };
 

@@ -81,22 +81,35 @@ export default function App() {
     });
   };
 
-  const payUPI = (amount: number) => {
+  const isMobileDevice = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  };
+
+  const handleUPIPayment = (amount: number) => {
+    if (!amount || amount < 1) {
+      toast.error("Please enter a valid amount (minimum ₹1).");
+      return;
+    }
+
+    if (!isMobileDevice()) {
+      toast.error("Please open this page on mobile to complete payment.");
+      return;
+    }
+
     const upiLink = `upi://pay?pa=rohankhan3161@oksbi&pn=Ramadan%20Iftar%20Fund&am=${amount}&cu=INR`;
     window.location.href = upiLink;
   };
 
-  const payCustom = () => {
+  const handlePresetAmount = (amount: number) => {
+    handleUPIPayment(amount);
+  };
+
+  const handleCustomPayment = () => {
     const input = customAmountRef.current;
     if (!input) return;
     
     const amount = parseFloat(input.value);
-    
-    if (amount && amount >= 1) {
-      payUPI(amount);
-    } else {
-      toast.error("Please enter a valid amount (minimum ₹1).");
-    }
+    handleUPIPayment(amount);
   };
 
   return (
@@ -294,67 +307,90 @@ export default function App() {
 
       {/* Donation Section */}
       <section id="donation-section" className="py-20 px-4 sm:px-6 lg:px-8 bg-secondary/30">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
-            Support Iftar with Your Contribution
-          </h2>
-          
-          <p className="text-lg text-muted-foreground mb-12">
-            Select an amount or enter custom amount.
-          </p>
-
-          {/* Preset Amount Buttons */}
-          <div className="mb-8 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
-            <Button
-              onClick={() => payUPI(50)}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg"
-            >
-              ₹50
-            </Button>
-            <Button
-              onClick={() => payUPI(100)}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg"
-            >
-              ₹100
-            </Button>
-            <Button
-              onClick={() => payUPI(250)}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg"
-            >
-              ₹250
-            </Button>
-            <Button
-              onClick={() => payUPI(500)}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg"
-            >
-              ₹500
-            </Button>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4" style={{ color: "#00a86b" }}>
+              Support Iftar with Your Contribution
+            </h2>
+            
+            <p className="text-lg text-muted-foreground">
+              Select an amount or enter custom amount
+            </p>
           </div>
 
-          {/* Custom Amount Section */}
-          <div className="mb-12 max-w-md mx-auto">
-            <div className="flex flex-col gap-4 items-center justify-center">
-              <input
-                ref={customAmountRef}
-                type="number"
-                placeholder="Enter custom amount (₹1 minimum)"
-                className="w-full px-4 py-3 rounded-lg border-2 border-primary/30 bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-lg"
-                min="1"
-                step="1"
-              />
-              <Button
-                onClick={payCustom}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-10 py-6 rounded-lg shadow-soft hover:shadow-xl transition-all duration-300 text-lg w-full sm:w-auto"
-              >
-                Donate
-              </Button>
+          {/* UPI Details Prominently Displayed */}
+          <div className="mb-8 text-center">
+            <div className="inline-block bg-card/80 backdrop-blur-sm border-2 border-primary/30 rounded-2xl p-6 shadow-soft">
+              <div className="space-y-3">
+                <div className="flex items-center justify-center gap-2">
+                  <CreditCard className="h-5 w-5 text-primary" />
+                  <span className="text-sm text-muted-foreground">UPI ID:</span>
+                  <span className="text-lg font-mono font-bold text-foreground">rohankhan3161@oksbi</span>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <Phone className="h-5 w-5 text-primary" />
+                  <span className="text-sm text-muted-foreground">Mobile:</span>
+                  <span className="text-lg font-bold text-foreground">9382376193</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <Separator className="my-8 max-w-2xl mx-auto" />
+          {/* Preset Amount Buttons */}
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
+            {[50, 100, 250, 500].map((amount) => (
+              <button
+                key={amount}
+                onClick={() => handlePresetAmount(amount)}
+                className="px-8 py-4 text-lg font-semibold text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
+                style={{ 
+                  backgroundColor: "#00a86b",
+                  minWidth: "120px"
+                }}
+              >
+                ₹{amount}
+              </button>
+            ))}
+          </div>
+
+          {/* Custom Amount Input */}
+          <div className="max-w-md mx-auto">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <input
+                ref={customAmountRef}
+                type="number"
+                placeholder="Enter amount (₹1 minimum)"
+                className="flex-1 px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-lg"
+                min="1"
+                step="1"
+              />
+              <button
+                onClick={handleCustomPayment}
+                className="px-8 py-3 font-semibold text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 text-lg whitespace-nowrap"
+                style={{ 
+                  backgroundColor: "#00a86b"
+                }}
+              >
+                Donate
+              </button>
+            </div>
+          </div>
+
+          {/* Fallback Instructions */}
+          <div className="mt-8 text-center">
+            <p className="text-sm text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              {isMobileDevice() ? (
+                "If payment app does not open, please copy the UPI ID and pay manually using any UPI app."
+              ) : (
+                "Please open this page on mobile to complete payment, or copy the UPI ID above to pay manually."
+              )}
+            </p>
+          </div>
+
+          <Separator className="my-12 max-w-2xl mx-auto" />
 
           {/* Alternative Payment Methods */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {/* UPI QR Code */}
             <Card className="shadow-soft hover:shadow-xl transition-all duration-300">
               <CardHeader className="text-center">

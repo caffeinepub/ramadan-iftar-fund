@@ -30,12 +30,12 @@ export default function App() {
   
   const [copiedUPI, setCopiedUPI] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const customAmountRef = useRef<HTMLInputElement>(null);
 
-  const totalAmount = stats ? Number(stats.totalAmount) : 0;
-  const mealsSponsored = stats ? Number(stats.mealsSponsored) : 0;
+  // Static values for display
+  const totalAmount = 850;
+  const mealsSponsored = 3;
   const targetMeals = stats ? Number(stats.targetMeals) : 1000;
-  const percentageComplete = stats?.percentageComplete ?? 0;
+  const percentageComplete = (mealsSponsored / targetMeals) * 100;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,49 +67,38 @@ export default function App() {
     }
   };
 
-  const handleManualDonationRecord = (amount: number) => {
-    recordDonation(BigInt(amount), {
-      onSuccess: () => {
-        toast.success(`Thank you! Your donation of ₹${amount} has been recorded.`, {
-          description: `This will feed ${Math.floor(amount / MEAL_COST_RUPEES)} person(s).`,
-          duration: 5000,
-        });
-      },
-      onError: () => {
-        toast.error("Failed to record donation. Please try again.");
-      },
-    });
+  const handleDownloadQR = () => {
+    const qrImageUrl = "/assets/uploads/WhatsApp-Image-2026-02-25-at-05.01.09-1.jpeg";
+    const link = document.createElement('a');
+    link.href = qrImageUrl;
+    link.download = 'Ramadan-Iftar-Fund-QR.jpeg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("QR Code downloaded successfully");
   };
 
-  const isMobileDevice = () => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  };
+  const handleShareCampaign = async () => {
+    const shareData = {
+      title: 'Ramadan Iftar Fund',
+      text: 'Support Iftar for the needy this Ramadan.',
+      url: window.location.href
+    };
 
-  const handleUPIPayment = (amount: number) => {
-    if (!amount || amount < 1) {
-      toast.error("Please enter a valid amount (minimum ₹1).");
-      return;
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        toast.success("Campaign shared successfully");
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success("Link copied. Share with others.");
+      }
+    } catch (err) {
+      // User cancelled or error occurred
+      if (err instanceof Error && err.name !== 'AbortError') {
+        toast.error("Failed to share campaign");
+      }
     }
-
-    if (!isMobileDevice()) {
-      toast.error("Please open this page on mobile to complete payment.");
-      return;
-    }
-
-    const upiLink = `upi://pay?pa=rohankhan3161@oksbi&pn=Ramadan%20Iftar%20Fund&am=${amount}&cu=INR`;
-    window.location.href = upiLink;
-  };
-
-  const handlePresetAmount = (amount: number) => {
-    handleUPIPayment(amount);
-  };
-
-  const handleCustomPayment = () => {
-    const input = customAmountRef.current;
-    if (!input) return;
-    
-    const amount = parseFloat(input.value);
-    handleUPIPayment(amount);
   };
 
   return (
@@ -308,143 +297,90 @@ export default function App() {
       {/* Donation Section */}
       <section id="donation-section" className="py-20 px-4 sm:px-6 lg:px-8 bg-secondary/30">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-8">
+          <div className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4" style={{ color: "#00a86b" }}>
               Support Iftar with Your Contribution
             </h2>
             
-            <p className="text-lg text-muted-foreground">
-              Select an amount or enter custom amount
+            <p className="text-lg text-muted-foreground mb-2">
+              Scan using any UPI app (GPay, PhonePe, Paytm, BHIM)
+            </p>
+            
+            <p className="text-sm text-muted-foreground/80">
+              For large payments, scan directly using app camera.
             </p>
           </div>
 
-          {/* UPI Details Prominently Displayed */}
-          <div className="mb-8 text-center">
-            <div className="inline-block bg-card/80 backdrop-blur-sm border-2 border-primary/30 rounded-2xl p-6 shadow-soft">
-              <div className="space-y-3">
-                <div className="flex items-center justify-center gap-2">
-                  <CreditCard className="h-5 w-5 text-primary" />
-                  <span className="text-sm text-muted-foreground">UPI ID:</span>
-                  <span className="text-lg font-mono font-bold text-foreground">rohankhan3161@oksbi</span>
-                </div>
-                <div className="flex items-center justify-center gap-2">
-                  <Phone className="h-5 w-5 text-primary" />
-                  <span className="text-sm text-muted-foreground">Mobile:</span>
-                  <span className="text-lg font-bold text-foreground">9382376193</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Preset Amount Buttons */}
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            {[50, 100, 250, 500].map((amount) => (
-              <button
-                key={amount}
-                onClick={() => handlePresetAmount(amount)}
-                className="px-8 py-4 text-lg font-semibold text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
-                style={{ 
-                  backgroundColor: "#00a86b",
-                  minWidth: "120px"
-                }}
-              >
-                ₹{amount}
-              </button>
-            ))}
-          </div>
-
-          {/* Custom Amount Input */}
-          <div className="max-w-md mx-auto">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <input
-                ref={customAmountRef}
-                type="number"
-                placeholder="Enter amount (₹1 minimum)"
-                className="flex-1 px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-lg"
-                min="1"
-                step="1"
-              />
-              <button
-                onClick={handleCustomPayment}
-                className="px-8 py-3 font-semibold text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 text-lg whitespace-nowrap"
-                style={{ 
-                  backgroundColor: "#00a86b"
-                }}
-              >
-                Donate
-              </button>
-            </div>
-          </div>
-
-          {/* Fallback Instructions */}
-          <div className="mt-8 text-center">
-            <p className="text-sm text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              {isMobileDevice() ? (
-                "If payment app does not open, please copy the UPI ID and pay manually using any UPI app."
-              ) : (
-                "Please open this page on mobile to complete payment, or copy the UPI ID above to pay manually."
-              )}
-            </p>
-          </div>
-
-          <Separator className="my-12 max-w-2xl mx-auto" />
-
-          {/* Alternative Payment Methods */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {/* UPI QR Code */}
-            <Card className="shadow-soft hover:shadow-xl transition-all duration-300">
+          {/* QR Code Section */}
+          <div className="flex flex-col items-center max-w-md mx-auto">
+            <Card className="shadow-soft hover:shadow-xl transition-all duration-300 w-full">
               <CardHeader className="text-center">
-                <QrCode className="h-8 w-8 text-primary mx-auto mb-2" />
-                <CardTitle className="text-lg">Scan QR Code</CardTitle>
+                <QrCode className="h-10 w-10 text-primary mx-auto mb-3" />
+                <CardTitle className="text-2xl">Scan QR Code to Donate</CardTitle>
                 <CardDescription>Pay via any UPI app</CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-col items-center">
-                <div className="bg-white p-3 rounded-xl shadow-inner mb-3">
+              <CardContent className="flex flex-col items-center space-y-6">
+                <div className="bg-white p-4 rounded-xl shadow-inner">
                   <img 
                     src="/assets/uploads/WhatsApp-Image-2026-02-25-at-05.01.09-1.jpeg" 
                     alt="UPI QR Code" 
-                    className="w-40 h-40 object-contain"
+                    className="w-64 h-64 object-contain"
                   />
                 </div>
-                <p className="text-xs text-muted-foreground text-center">
-                  Scan with Google Pay, PhonePe, Paytm, or any UPI app
-                </p>
-              </CardContent>
-            </Card>
 
-            {/* UPI ID */}
-            <Card className="shadow-soft hover:shadow-xl transition-all duration-300">
-              <CardHeader className="text-center">
-                <CreditCard className="h-8 w-8 text-primary mx-auto mb-2" />
-                <CardTitle className="text-lg">UPI ID</CardTitle>
-                <CardDescription>Copy and paste in your UPI app</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center space-y-3">
-                <div className="bg-muted/50 px-4 py-3 rounded-lg w-full text-center border-2 border-dashed border-border">
-                  <p className="text-lg font-mono font-semibold text-foreground mb-1">
-                    rohankhan3161@oksbi
-                  </p>
-                  <p className="text-xs text-muted-foreground">UPI ID</p>
+                {/* Download and Share Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 w-full">
+                  <Button 
+                    onClick={handleDownloadQR}
+                    variant="outline"
+                    className="flex-1"
+                    size="lg"
+                  >
+                    <QrCode className="mr-2 h-5 w-5" />
+                    Download QR Code
+                  </Button>
+                  
+                  <Button 
+                    onClick={handleShareCampaign}
+                    className="flex-1"
+                    size="lg"
+                    style={{ 
+                      backgroundColor: "#00a86b"
+                    }}
+                  >
+                    <Users className="mr-2 h-5 w-5" />
+                    Share This Campaign
+                  </Button>
                 </div>
-                
-                <Button 
-                  onClick={handleCopyUPI}
-                  variant="outline"
-                  className="w-full"
-                  size="sm"
-                >
-                  {copiedUPI ? (
-                    <>
-                      <Check className="mr-2 h-4 w-4 text-primary" />
-                      Copied!
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="mr-2 h-4 w-4" />
-                      Copy UPI ID
-                    </>
-                  )}
-                </Button>
+
+                {/* UPI ID Display */}
+                <div className="w-full space-y-3 pt-4 border-t border-border">
+                  <div className="bg-muted/50 px-4 py-3 rounded-lg text-center border-2 border-dashed border-border">
+                    <p className="text-sm text-muted-foreground mb-1">UPI ID</p>
+                    <p className="text-lg font-mono font-semibold text-foreground">
+                      rohankhan3161@oksbi
+                    </p>
+                  </div>
+                  
+                  <Button 
+                    onClick={handleCopyUPI}
+                    variant="outline"
+                    className="w-full"
+                    size="sm"
+                  >
+                    {copiedUPI ? (
+                      <>
+                        <Check className="mr-2 h-4 w-4 text-primary" />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="mr-2 h-4 w-4" />
+                        Copy UPI ID
+                      </>
+                    )}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>

@@ -1,46 +1,50 @@
-import { useEffect, useState, useRef } from "react";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { Toaster, toast } from "sonner";
-import { AnimatedCounter } from "@/components/AnimatedCounter";
-import { useCampaignStats, useMakeDonation } from "@/hooks/useQueries";
-import { 
-  Heart, 
-  Users, 
-  Target, 
-  Copy, 
-  Check, 
-  Mail, 
-  Phone, 
+import { useCampaignStats } from "@/hooks/useQueries";
+import {
+  Check,
+  Copy,
+  Heart,
+  Mail,
   MapPin,
-  CreditCard,
+  Phone,
   QrCode,
   TrendingUp,
-  Loader2
+  Users,
 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Toaster, toast } from "sonner";
 
-const SCROLL_DURATION_MS = 800;
+const _SCROLL_DURATION_MS = 800;
 const MEAL_COST_RUPEES = 50;
 
 export default function App() {
   const { data: stats, isLoading } = useCampaignStats();
-  const { mutate: recordDonation, isPending: isRecordingDonation } = useMakeDonation();
-  
+
   const [copiedUPI, setCopiedUPI] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   // Static values for display
-  const totalAmount = 850;
-  const mealsSponsored = 3;
+  const totalAmount = 7923;
+  const mealsSponsored = Math.floor(7923 / 50);
+  const donorCount = 26;
   const targetMeals = stats ? Number(stats.targetMeals) : 1000;
-  const percentageComplete = (mealsSponsored / targetMeals) * 100;
+  const _percentageComplete = (mealsSponsored / targetMeals) * 100;
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       setScrollProgress(progress);
     };
@@ -50,9 +54,9 @@ export default function App() {
   }, []);
 
   const scrollToDonation = () => {
-    const donationSection = document.getElementById("donation-section");
-    if (donationSection) {
-      donationSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    const qrSection = document.getElementById("qr-section");
+    if (qrSection) {
+      qrSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
@@ -62,16 +66,17 @@ export default function App() {
       setCopiedUPI(true);
       toast.success("UPI ID copied to clipboard");
       setTimeout(() => setCopiedUPI(false), 2000);
-    } catch (err) {
+    } catch (_err) {
       toast.error("Failed to copy UPI ID");
     }
   };
 
   const handleDownloadQR = () => {
-    const qrImageUrl = "/assets/uploads/WhatsApp-Image-2026-02-25-at-05.01.09-1.jpeg";
-    const link = document.createElement('a');
+    const qrImageUrl =
+      "/assets/uploads/WhatsApp-Image-2026-02-25-at-05.01.09-1.jpeg";
+    const link = document.createElement("a");
     link.href = qrImageUrl;
-    link.download = 'Ramadan-Iftar-Fund-QR.jpeg';
+    link.download = "Ramadan-Iftar-Fund-QR.jpeg";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -80,13 +85,16 @@ export default function App() {
 
   const handleShareCampaign = () => {
     if (navigator.share) {
-      navigator.share({
-        title: "Ramadan Iftar Fund",
-        text: "Support Iftar for the needy this Ramadan.",
-        url: window.location.href
-      }).catch(() => {});
+      navigator
+        .share({
+          title: "Ramadan Iftar Fund",
+          text: "Support Iftar for the needy this Ramadan.",
+          url: window.location.href,
+        })
+        .catch(() => {});
     } else {
-      navigator.clipboard.writeText(window.location.href)
+      navigator.clipboard
+        .writeText(window.location.href)
         .then(() => alert("Link copied. Share with others."))
         .catch(() => alert("Unable to copy link."));
     }
@@ -95,58 +103,75 @@ export default function App() {
   return (
     <>
       <Toaster position="top-center" richColors />
-      
+
       {/* Progress indicator */}
       <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-secondary">
-        <div 
+        <div
           className="h-full bg-primary transition-all duration-200"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
 
       {/* Hero Section */}
-      <section 
+      <section
         className="relative min-h-screen flex items-center justify-center overflow-hidden"
         style={{
-          backgroundImage: "url(/assets/generated/hero-pattern.dim_1920x1080.jpg)",
+          backgroundImage:
+            "url(/assets/generated/hero-pattern.dim_1920x1080.jpg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
         {/* Dark overlay for readability on black background */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/85 to-black/90" />
-        
+
         {/* Animated geometric pattern overlay - reduced opacity */}
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.07]"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l10 10-10 10-10-10L30 0zm0 40l10 10-10 10-10-10 10-10zM0 30l10 10-10 10L0 40l10-10L0 20v10zm40 0l10 10-10 10-10-10 10-10zm10-10l10 10-10 10V30l10-10zM20 30l10-10 10 10-10 10-10-10z' fill='%2300a86b' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`,
             animation: "shimmer 20s linear infinite",
           }}
         />
-        
+
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="animate-fade-in-spiritual">
+            {/* Bismillah */}
+            <div
+              style={{
+                textAlign: "center",
+                marginBottom: "10px",
+                fontSize: "18px",
+                color: "#c9a227",
+                letterSpacing: "1px",
+              }}
+            >
+              بِسْمِ ٱللَّٰهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
+            </div>
+
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-islamic-serif font-light text-primary mb-6 leading-tight tracking-wide">
               Serving Iftar for the Pleasure of Allah.
             </h1>
-            
+
             <p className="text-xl sm:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto font-islamic-serif font-light leading-relaxed tracking-wide">
               An initiative by SVU students this blessed Ramadan.
             </p>
-            
-            <Button 
+
+            <Button
               onClick={scrollToDonation}
               size="lg"
               className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-6 rounded-full shadow-glow hover:shadow-xl transition-all duration-300 hover:scale-105"
             >
               <Heart className="mr-2 h-5 w-5" />
-              Support as an SVU Student
+              Click to Support Iftar
             </Button>
           </div>
 
           {/* Quick stats preview */}
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+          <div
+            className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 animate-fade-in"
+            style={{ animationDelay: "0.3s" }}
+          >
             <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-6 shadow-soft">
               <TrendingUp className="h-8 w-8 text-primary mx-auto mb-2" />
               <p className="text-sm text-muted-foreground mb-1">Total Raised</p>
@@ -154,14 +179,20 @@ export default function App() {
                 {isLoading ? (
                   <span className="animate-pulse">—</span>
                 ) : (
-                  <AnimatedCounter value={totalAmount} prefix="₹" decimals={0} />
+                  <AnimatedCounter
+                    value={totalAmount}
+                    prefix="₹"
+                    decimals={0}
+                  />
                 )}
               </p>
             </div>
-            
+
             <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-6 shadow-soft">
               <Users className="h-8 w-8 text-primary mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground mb-1">Meals Sponsored</p>
+              <p className="text-sm text-muted-foreground mb-1">
+                Meals Sponsored
+              </p>
               <p className="text-3xl font-bold text-foreground">
                 {isLoading ? (
                   <span className="animate-pulse">—</span>
@@ -170,15 +201,15 @@ export default function App() {
                 )}
               </p>
             </div>
-            
+
             <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-6 shadow-soft">
-              <Target className="h-8 w-8 text-primary mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground mb-1">Target Progress</p>
+              <Users className="h-8 w-8 text-primary mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground mb-1">Donors</p>
               <p className="text-3xl font-bold text-foreground">
                 {isLoading ? (
                   <span className="animate-pulse">—</span>
                 ) : (
-                  <AnimatedCounter value={percentageComplete} suffix="%" decimals={1} />
+                  <AnimatedCounter value={donorCount} decimals={0} />
                 )}
               </p>
             </div>
@@ -191,16 +222,20 @@ export default function App() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-block mb-6">
             <div className="bg-primary/10 border-2 border-primary rounded-full px-6 py-2">
-              <p className="text-primary font-bold text-lg">🎓 Student-Led Initiative</p>
+              <p className="text-primary font-bold text-lg">
+                🎓 Student-Led Initiative
+              </p>
             </div>
           </div>
-          
+
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
             SVU Unity in Action
           </h2>
-          
+
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-            Together, we can show the power of SVU unity. This isn't just a fundraiser—it's our chance as students to make a real impact in our community during Ramadan.
+            Together, we can show the power of SVU unity. This isn't just a
+            fundraiser—it's our chance as students to make a real impact in our
+            community during Ramadan.
           </p>
         </div>
       </section>
@@ -223,14 +258,20 @@ export default function App() {
                 <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
                   <TrendingUp className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle className="text-xl text-muted-foreground font-sans">Total Amount Raised</CardTitle>
+                <CardTitle className="text-xl text-muted-foreground font-sans">
+                  Total Amount Raised
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-center">
                 <p className="text-5xl font-bold text-primary">
                   {isLoading ? (
                     <span className="animate-pulse">—</span>
                   ) : (
-                    <AnimatedCounter value={totalAmount} prefix="₹" decimals={0} />
+                    <AnimatedCounter
+                      value={totalAmount}
+                      prefix="₹"
+                      decimals={0}
+                    />
                   )}
                 </p>
               </CardContent>
@@ -241,7 +282,9 @@ export default function App() {
                 <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
                   <Users className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle className="text-xl text-muted-foreground font-sans">Meals Sponsored</CardTitle>
+                <CardTitle className="text-xl text-muted-foreground font-sans">
+                  Meals Sponsored
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-center">
                 <p className="text-5xl font-bold text-primary">
@@ -260,24 +303,22 @@ export default function App() {
             <Card className="shadow-soft border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-glow">
               <CardHeader className="text-center pb-4">
                 <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Target className="h-8 w-8 text-primary" />
+                  <Users className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle className="text-xl text-muted-foreground font-sans">Target Progress</CardTitle>
+                <CardTitle className="text-xl text-muted-foreground font-sans">
+                  Donors
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <p className="text-5xl font-bold text-primary mb-4">
+                <p className="text-5xl font-bold text-primary">
                   {isLoading ? (
                     <span className="animate-pulse">—</span>
                   ) : (
-                    <>
-                      <AnimatedCounter value={mealsSponsored} decimals={0} />
-                      <span className="text-2xl text-muted-foreground"> / {targetMeals}</span>
-                    </>
+                    <AnimatedCounter value={donorCount} decimals={0} />
                   )}
                 </p>
-                <Progress value={percentageComplete} className="h-3" />
                 <p className="text-sm text-muted-foreground mt-2">
-                  {isLoading ? "—" : `${percentageComplete.toFixed(1)}% complete`}
+                  generous supporters
                 </p>
               </CardContent>
             </Card>
@@ -286,42 +327,76 @@ export default function App() {
       </section>
 
       {/* Donation Section */}
-      <section id="donation-section" className="py-20 px-4 sm:px-6 lg:px-8 bg-secondary/30">
+      <section
+        id="donation-section"
+        className="py-20 px-4 sm:px-6 lg:px-8 bg-secondary/30"
+      >
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4" style={{ color: "#00a86b" }}>
+            <h2
+              className="text-4xl sm:text-5xl font-bold mb-4"
+              style={{ color: "#00a86b" }}
+            >
               Support Iftar with Your Contribution
             </h2>
-            
+
             <p className="text-lg text-muted-foreground mb-2">
               Scan using any UPI app (GPay, PhonePe, Paytm, BHIM)
             </p>
-            
+
             <p className="text-sm text-muted-foreground/80">
               For large payments, scan directly using app camera.
             </p>
           </div>
 
+          {/* Hadith Box - Above QR Code */}
+          <div
+            style={{
+              maxWidth: "600px",
+              margin: "30px auto",
+              padding: "15px",
+              border: "1px solid #00a86b",
+              borderRadius: "10px",
+              textAlign: "center",
+            }}
+          >
+            <p
+              style={{
+                color: "#ddd",
+                fontStyle: "italic",
+                fontSize: "16px",
+                lineHeight: "1.6",
+              }}
+            >
+              "Whoever feeds a fasting person will have a reward like his."
+            </p>
+          </div>
+
           {/* QR Code Section */}
-          <div className="flex flex-col items-center max-w-md mx-auto">
+          <div
+            id="qr-section"
+            className="flex flex-col items-center max-w-md mx-auto"
+          >
             <Card className="shadow-soft hover:shadow-xl transition-all duration-300 w-full">
               <CardHeader className="text-center">
                 <QrCode className="h-10 w-10 text-primary mx-auto mb-3" />
-                <CardTitle className="text-2xl">Scan QR Code to Donate</CardTitle>
+                <CardTitle className="text-2xl">
+                  Scan QR Code to Donate
+                </CardTitle>
                 <CardDescription>Pay via any UPI app</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col items-center space-y-6">
                 <div className="bg-white p-4 rounded-xl shadow-inner">
-                  <img 
-                    src="/assets/uploads/WhatsApp-Image-2026-02-25-at-05.01.09-1.jpeg" 
-                    alt="UPI QR Code" 
+                  <img
+                    src="/assets/uploads/WhatsApp-Image-2026-02-25-at-05.01.09-1.jpeg"
+                    alt="UPI QR Code"
                     className="w-64 h-64 object-contain"
                   />
                 </div>
 
                 {/* Download and Share Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 w-full">
-                  <Button 
+                  <Button
                     onClick={handleDownloadQR}
                     variant="outline"
                     className="flex-1"
@@ -330,13 +405,13 @@ export default function App() {
                     <QrCode className="mr-2 h-5 w-5" />
                     Download QR Code
                   </Button>
-                  
-                  <Button 
+
+                  <Button
                     onClick={handleShareCampaign}
                     className="flex-1"
                     size="lg"
-                    style={{ 
-                      backgroundColor: "#00a86b"
+                    style={{
+                      backgroundColor: "#00a86b",
                     }}
                   >
                     <Users className="mr-2 h-5 w-5" />
@@ -352,8 +427,8 @@ export default function App() {
                       rohankhan3161@oksbi
                     </p>
                   </div>
-                  
-                  <Button 
+
+                  <Button
                     onClick={handleCopyUPI}
                     variant="outline"
                     className="w-full"
@@ -374,6 +449,115 @@ export default function App() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Arabic Dua with Bengali Translation - Below QR Code */}
+            <div style={{ textAlign: "center", marginTop: "20px" }}>
+              <div
+                style={{
+                  fontSize: "20px",
+                  color: "#c9a227",
+                  marginBottom: "5px",
+                }}
+              >
+                جَزَاكُمُ ٱللَّٰهُ خَيْرًا
+              </div>
+              <div style={{ fontSize: "14px", color: "#ccc" }}>
+                আল্লাহ আপনাদের উত্তম প্রতিদান দিন।
+              </div>
+            </div>
+
+            {/* Last Updated Timestamp */}
+            <div
+              style={{
+                textAlign: "center",
+                fontSize: "13px",
+                color: "#888",
+                marginTop: "5px",
+              }}
+            >
+              Last Updated: 26 Feb 2026
+            </div>
+
+            {/* UPI Info and Payment Confirmation Section */}
+            <div
+              style={{
+                maxWidth: "600px",
+                margin: "30px auto",
+                textAlign: "center",
+                color: "#ddd",
+              }}
+            >
+              {/* UPI Info */}
+              <div style={{ marginTop: "15px", fontSize: "16px" }}>
+                <strong>UPI ID:</strong> rohankhan3161@oksbi <br />
+                <strong>Mobile:</strong> 9382376193
+              </div>
+
+              <div
+                style={{ marginTop: "10px", fontSize: "14px", color: "#aaa" }}
+              >
+                ✔ Works with GPay / PhonePe / Paytm / BHIM <br />✔ Scan directly
+                from your UPI app
+              </div>
+
+              {/* Screenshot Confirmation */}
+              <div
+                style={{
+                  marginTop: "15px",
+                  padding: "12px",
+                  border: "1px solid #00a86b",
+                  borderRadius: "8px",
+                }}
+              >
+                After payment, please share screenshot on WhatsApp:
+                <br />
+                <strong>8617335449</strong>
+              </div>
+            </div>
+
+            {/* How It Works Section */}
+            <div
+              style={{
+                maxWidth: "700px",
+                margin: "40px auto",
+                textAlign: "center",
+                color: "#ddd",
+              }}
+            >
+              <h3
+                style={{
+                  color: "#00a86b",
+                  marginBottom: "20px",
+                  fontSize: "24px",
+                }}
+              >
+                How It Works
+              </h3>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  flexWrap: "wrap",
+                  gap: "20px",
+                }}
+              >
+                <div style={{ flex: 1, minWidth: "150px" }}>
+                  <div style={{ fontSize: "30px" }}>📷</div>
+                  <div style={{ marginTop: "8px" }}>Scan QR Code</div>
+                </div>
+
+                <div style={{ flex: 1, minWidth: "150px" }}>
+                  <div style={{ fontSize: "30px" }}>💳</div>
+                  <div style={{ marginTop: "8px" }}>Complete Payment</div>
+                </div>
+
+                <div style={{ flex: 1, minWidth: "150px" }}>
+                  <div style={{ fontSize: "30px" }}>📩</div>
+                  <div style={{ marginTop: "8px" }}>Send Screenshot</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -381,27 +565,28 @@ export default function App() {
       {/* Our Campus, Our Initiative Section */}
       <section className="relative w-full min-h-[500px] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url(/assets/uploads/1676876330phpiNyAw9-1--1.jpeg)",
+            backgroundImage:
+              "url(/assets/uploads/1676876330phpiNyAw9-1--1.jpeg)",
           }}
         />
-        
+
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-black/60" />
-        
+
         {/* Content */}
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-24">
           <div className="space-y-6">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
               An Initiative by SVU Students
             </h2>
-            
+
             <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
               Together, we are serving Iftar meals to those in need.
             </p>
-            
+
             <p className="text-sm text-white/70 mt-4">
               Swami Vivekananda University, West Bengal
             </p>
@@ -420,20 +605,32 @@ export default function App() {
             <p className="text-center text-muted-foreground mb-8">
               Proof of our work on the ground
             </p>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { src: "/assets/uploads/WhatsApp-Image-2026-02-24-at-02.19.30-1.jpeg", alt: "Volunteers distributing meals" },
-                { src: "/assets/uploads/WhatsApp-Image-2026-02-24-at-02.19.29-2.jpeg", alt: "Meal preparation" },
-                { src: "/assets/uploads/WhatsApp-Image-2026-02-24-at-02.19.30-1--3.jpeg", alt: "Families breaking fast" },
-                { src: "/assets/uploads/WhatsApp-Image-2026-02-24-at-02.19.29-1--4.jpeg", alt: "Charity event organization" },
-              ].map((image, idx) => (
-                <Card 
-                  key={idx} 
+                {
+                  src: "/assets/uploads/WhatsApp-Image-2026-02-24-at-02.19.30-1.jpeg",
+                  alt: "Volunteers distributing meals",
+                },
+                {
+                  src: "/assets/uploads/WhatsApp-Image-2026-02-24-at-02.19.29-2.jpeg",
+                  alt: "Meal preparation",
+                },
+                {
+                  src: "/assets/uploads/WhatsApp-Image-2026-02-25-at-15.43.16-1.jpeg",
+                  alt: "Families breaking fast",
+                },
+                {
+                  src: "/assets/uploads/WhatsApp-Image-2026-02-24-at-02.19.29-1--4.jpeg",
+                  alt: "Charity event organization",
+                },
+              ].map((image) => (
+                <Card
+                  key={image.src}
                   className="overflow-hidden shadow-soft hover:shadow-xl transition-all duration-300 hover:scale-105"
                 >
                   <div className="aspect-[4/3] overflow-hidden">
-                    <img 
+                    <img
                       src={image.src}
                       alt={image.alt}
                       className="w-full h-full object-cover"
@@ -452,7 +649,9 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             {/* Contact Info */}
             <div>
-              <h4 className="text-lg font-semibold text-foreground mb-4">Contact Us</h4>
+              <h4 className="text-lg font-semibold text-foreground mb-4">
+                Contact Us
+              </h4>
               <div className="space-y-3 text-sm text-muted-foreground">
                 <div className="flex items-start">
                   <Mail className="h-4 w-4 mr-2 mt-0.5 shrink-0" />
@@ -467,22 +666,32 @@ export default function App() {
                 </div>
                 <div className="flex items-start">
                   <MapPin className="h-4 w-4 mr-2 mt-0.5 shrink-0" />
-                  <span>Swami Vivekananda University, Barrackpore, North 24 Parganas, West Bengal</span>
+                  <span>
+                    Swami Vivekananda University, Barrackpore, North 24
+                    Parganas, West Bengal
+                  </span>
                 </div>
               </div>
             </div>
 
             {/* About */}
             <div>
-              <h4 className="text-lg font-semibold text-foreground mb-4">About This Campaign</h4>
+              <h4 className="text-lg font-semibold text-foreground mb-4">
+                About This Campaign
+              </h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                A student-led initiative at Swami Vivekananda University to feed 1000 people during Ramadan. Together, SVU students are making a real difference in our community. When we unite for a cause, we show what youth empowerment truly means.
+                A student-led initiative at Swami Vivekananda University to feed
+                1000 people during Ramadan. Together, SVU students are making a
+                real difference in our community. When we unite for a cause, we
+                show what youth empowerment truly means.
               </p>
             </div>
 
             {/* Social */}
             <div>
-              <h4 className="text-lg font-semibold text-foreground mb-4">Follow Us</h4>
+              <h4 className="text-lg font-semibold text-foreground mb-4">
+                Follow Us
+              </h4>
               <div className="flex space-x-4">
                 <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer">
                   <span className="text-sm">FB</span>
@@ -509,13 +718,14 @@ export default function App() {
 
             <div className="text-center text-sm text-muted-foreground">
               <p className="mb-2">
-                This platform is built on the Internet Computer blockchain for transparency and trust.
+                This platform is built on the Internet Computer blockchain for
+                transparency and trust.
               </p>
               <p>
                 © 2026. Built with love using{" "}
-                <a 
-                  href="https://caffeine.ai" 
-                  target="_blank" 
+                <a
+                  href="https://caffeine.ai"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:underline"
                 >
@@ -526,7 +736,9 @@ export default function App() {
 
             <div className="text-xs text-muted-foreground text-center pt-4">
               <p>
-                <strong>Disclaimer:</strong> This is a demonstration website. For actual donations, please verify the authenticity of the organization and payment details.
+                <strong>Disclaimer:</strong> This is a demonstration website.
+                For actual donations, please verify the authenticity of the
+                organization and payment details.
               </p>
             </div>
           </div>

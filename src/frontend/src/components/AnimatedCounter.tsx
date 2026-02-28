@@ -10,7 +10,7 @@ interface AnimatedCounterProps {
 }
 
 const ANIMATION_DURATION_MS = 2000;
-const FRAME_RATE = 60;
+const _FRAME_RATE = 60;
 
 export function AnimatedCounter({
   value,
@@ -24,9 +24,10 @@ export function AnimatedCounter({
   const frameRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
   const startValueRef = useRef(0);
+  const displayValueRef = useRef(0);
 
   useEffect(() => {
-    startValueRef.current = displayValue;
+    startValueRef.current = displayValueRef.current;
     startTimeRef.current = null;
 
     const animate = (timestamp: number) => {
@@ -38,9 +39,11 @@ export function AnimatedCounter({
       const progress = Math.min(elapsed / duration, 1);
 
       // Easing function: easeOutExpo
-      const easedProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      const easedProgress = progress === 1 ? 1 : 1 - 2 ** (-10 * progress);
 
-      const currentValue = startValueRef.current + (value - startValueRef.current) * easedProgress;
+      const currentValue =
+        startValueRef.current + (value - startValueRef.current) * easedProgress;
+      displayValueRef.current = currentValue;
       setDisplayValue(currentValue);
 
       if (progress < 1) {

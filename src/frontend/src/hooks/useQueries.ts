@@ -1,10 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useActor } from "./useActor";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Donation } from "../backend";
+import { useActor } from "./useActor";
 
 export function useCampaignStats() {
   const { actor, isFetching } = useActor();
-  
+
   return useQuery({
     queryKey: ["campaignStats"],
     queryFn: async () => {
@@ -18,7 +18,7 @@ export function useCampaignStats() {
 
 export function useAllDonations() {
   const { actor, isFetching } = useActor();
-  
+
   return useQuery<Donation[]>({
     queryKey: ["donations"],
     queryFn: async () => {
@@ -32,7 +32,7 @@ export function useAllDonations() {
 export function useMakeDonation() {
   const { actor } = useActor();
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: async (amount: bigint) => {
       if (!actor) throw new Error("Actor not initialized");
